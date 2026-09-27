@@ -1,3 +1,13 @@
+---
+title: Chater
+emoji: 💬
+colorFrom: yellow
+colorTo: orange
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Chater
 
 A small, good-looking chatbot you can run locally. It streams replies, keeps multiple chats in the browser, and talks to Groq, OpenAI, or Gemini when you add a key.
@@ -21,6 +31,12 @@ Without an API key it still runs in **demo mode** so you can try the UI. Add a k
 3. Or Google Gemini: `GEMINI_API_KEY`
 
 Put the key in `.env` next to `package.json`, then restart `npm run dev`.
+
+## Deploy (Hugging Face, free)
+
+1. Create a Docker Space at [huggingface.co/new-space](https://huggingface.co/new-space).
+2. In the Space, **Settings → Variables and secrets**, add secret `GROQ_API_KEY`.
+3. Push this GitHub repo to that Space.
 
 ## Deploy (Render)
 
