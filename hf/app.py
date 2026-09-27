@@ -10,20 +10,35 @@ SYSTEM_PROMPT = (
 MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
 
 
+def text_of(content):
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for block in content:
+            if isinstance(block, str):
+                parts.append(block)
+            elif isinstance(block, dict):
+                parts.append(block.get("text") or block.get("content") or "")
+        return "".join(parts)
+    return str(content or "")
+
+
 def reply(message, history):
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
         yield "Add a Space secret named GROQ_API_KEY in Settings, then restart the Space."
         return
 
+    user_text = text_of(message)
     client = Groq(api_key=api_key)
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for turn in history or []:
-        role = turn.get("role")
-        content = turn.get("content")
-        if role in ("user", "assistant") and isinstance(content, str) and content.strip():
+        role = turn.get("role") if isinstance(turn, dict) else None
+        content = text_of(turn.get("content") if isinstance(turn, dict) else "")
+        if role in ("user", "assistant") and content.strip():
             messages.append({"role": role, "content": content})
-    messages.append({"role": "user", "content": message})
+    messages.append({"role": "user", "content": user_text})
 
     stream = client.chat.completions.create(
         model=MODEL,
@@ -40,7 +55,6 @@ def reply(message, history):
 
 demo = gr.ChatInterface(
     fn=reply,
-    type="messages",
     title="Chater",
     description="Ask anything. Powered by Groq.",
     examples=[
