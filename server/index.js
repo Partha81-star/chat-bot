@@ -23,7 +23,7 @@ function getProvider() {
       name: "groq",
       url: "https://api.groq.com/openai/v1/chat/completions",
       key: process.env.GROQ_API_KEY,
-      model: "llama-3.3-70b-versatile",
+      model: process.env.GROQ_MODEL || "openai/gpt-oss-20b",
       style: "openai",
     };
   }
