@@ -222,7 +222,7 @@ app.get("*", (req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   const provider = getProvider();
   console.log(`Chater running on http://localhost:${PORT}`);
   console.log(provider ? `Provider: ${provider.name}` : "Demo mode — add GROQ_API_KEY to .env for live AI");
