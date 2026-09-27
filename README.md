@@ -32,6 +32,18 @@ Without an API key it still runs in **demo mode** so you can try the UI. Add a k
 
 Put the key in `.env` next to `package.json`, then restart `npm run dev`.
 
+## Deploy (Vercel, free)
+
+This is the easiest public host for this repo. Hobby usually does **not** need a card.
+
+1. Go to [vercel.com/new](https://vercel.com/new) and sign in with GitHub.
+2. Import **`Partha81-star/chat-bot`**.
+3. Leave the detected settings (or set **Root Directory** to empty / repo root).
+4. **Environment Variables:** `GROQ_API_KEY` = your Groq key.
+5. Click **Deploy**.
+
+You get a URL like `https://chat-bot-....vercel.app`.
+
 ## Deploy (Hugging Face, free)
 
 1. Create a Docker Space at [huggingface.co/new-space](https://huggingface.co/new-space).
