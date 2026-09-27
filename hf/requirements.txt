@@ -1,2 +1,3 @@
 groq>=0.18.0
 gradio>=5.20.0
+spaces

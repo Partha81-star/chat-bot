@@ -1,4 +1,5 @@
 import os
+import spaces
 from groq import Groq
 import gradio as gr
 
@@ -24,11 +25,11 @@ def text_of(content):
     return str(content or "")
 
 
+@spaces.GPU(duration=30)
 def reply(message, history):
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
-        yield "Add a Space secret named GROQ_API_KEY in Settings, then restart the Space."
-        return
+        return "Add a Space secret named GROQ_API_KEY in Settings, then restart the Space."
 
     user_text = text_of(message)
     client = Groq(api_key=api_key)
@@ -40,17 +41,12 @@ def reply(message, history):
             messages.append({"role": role, "content": content})
     messages.append({"role": "user", "content": user_text})
 
-    stream = client.chat.completions.create(
+    completion = client.chat.completions.create(
         model=MODEL,
         messages=messages,
         temperature=0.7,
-        stream=True,
     )
-    text = ""
-    for chunk in stream:
-        token = chunk.choices[0].delta.content or ""
-        text += token
-        yield text
+    return completion.choices[0].message.content or ""
 
 
 demo = gr.ChatInterface(
